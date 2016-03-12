@@ -5,26 +5,31 @@ const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
 
-const _controllerPath = '../controllers/';
+var setting = require('./setting');
 
-//控制器规则
-var controllerRule = {
-	'/': 'index',
-	'/:id': 'index'
-};
+const _controllerPath = '../'+ setting.path.controller +'/';
 
 var controllerMain = {
 	init: (router)=>{
 		var _self = controllerMain;
-		//循环规则 设置路由
-		_.forIn(controllerRule,(value,name)=>{
-			router.get(name, function *(next){
-				//读取控制器
-				var controller = _self.getContrller(value);
-				yield controller.bind(this)();
+		router.get('/',function*(){
+			var controller = _self.getContrller('index');
+			yield controller.bind(this)();
+		});
 
-				yield next;
-			});
+		router.get(/\/test$/,function*(){
+			var controller = _self.getContrller('test');
+			yield controller.bind(this)();
+		});
+
+		router.get('/test/',function*(){
+			this.body = 'test-all';
+		});
+		
+		//优先级原因
+		router.get('/:id',function*(){
+			var controller = _self.getContrller('index');
+			yield controller.bind(this)();
 		});
 	},
 	/*

@@ -2,7 +2,7 @@
  * 设置模块
  */
 
-const config = require('../config.json');
+const config = require('../config');
 
 const setting = config;
 

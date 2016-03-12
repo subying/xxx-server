@@ -2,7 +2,7 @@ const app     = require('koa')();
 const favicon = require('koa-favicon');
 const session = require('koa-session');
 
-const config     = require('./config');
+const setting     = require('./libs/setting');
 const middleware = require('./libs/middleware');
 const router     = require('./libs/router');
 
@@ -13,6 +13,6 @@ app
 	.use(middleware())
 	.use(router(app))
 	.use(favicon(__dirname + '/favicon.ico'))
-	.listen(config.port, ()=>{
-    	console.log("Node listen at " + config.port);
+	.listen(setting.port, ()=>{
+    	console.log("Node listen at " + setting.port);
 	});

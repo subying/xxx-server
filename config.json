@@ -1,4 +1,3 @@
 {
-    "port": 3000,
-    "views": "views"
+    "port": 3000
 }

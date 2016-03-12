@@ -5,13 +5,13 @@
 
 const router = require('koa-router')();
 const setting = require('./setting');
-const controller = require('./controller');
+const setController = require('./controller');
 
 module.exports = (app)=>{
 	app.use(router.routes());
 
 	//设置控制器
-	controller(router);
+	setController(router);
 
 	return function *(next){
 		console.log(this.request.url,this.status);

@@ -3,9 +3,12 @@
  */
 
 module.exports = function *(){
+	var _id = 'index';
 	if(this.params.id){
-		this.body = this.params.id;
-	}else{
-		this.body = 'index controller';
+		var _id  = this.params.id;
 	}
+
+	this.render({
+		id:_id
+	},'index');
 };
