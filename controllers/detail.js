@@ -11,9 +11,11 @@ module.exports = function *(){
 	if(Number(result.code)) throw Error('err');
 
 	list = result.data;
+	var title = result.title;
 
 
 	this.render({
-		list: list
+		list: list,
+		title: title
 	},'detail');
 };

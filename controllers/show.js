@@ -11,9 +11,11 @@ module.exports = function *(){
 	if(Number(result.code)) throw Error('err');
 
 	content = result.data;
+	var title = result.title;
 
 
 	this.render({
-		content: content
+		content: content,
+		title: title
 	},'show');
 };
