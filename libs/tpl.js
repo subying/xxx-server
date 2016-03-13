@@ -1,5 +1,6 @@
 /*
- * 模板渲染
+ * @description 模板渲染
+ * @auth subying
  */
 
 const fs = require('fs');

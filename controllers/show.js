@@ -1,19 +1,19 @@
 /*
- * @description 首页
+ * @description 内容
  */
 var book = require('../spider/book');
 
 module.exports = function *(){
-	var result={},list=[];
-
-	result = yield book.index();
+	var result={},content='';
+	result = yield book.show(this.params);
 	result = JSON.parse(result);
 
 	if(Number(result.code)) throw Error('err');
 
-	list = result.data;
-	
+	content = result.data;
+
+
 	this.render({
-		list: list
-	},'index');
+		content: content
+	},'show');
 };

@@ -7,8 +7,7 @@ module.exports = ()=>{
 	return function *(next){
 		//
 		this._data = {
-			a: 123
-		}
+		};
 
 		//渲染模板方法
 		this.render = tpl;

@@ -4,7 +4,10 @@
   "description": "xxx-server",
   "main": "app.js",
   "dependencies": {
+    "bufferhelper": "^0.2.1",
+    "cheerio": "^0.20.0",
     "ejs": "^2.4.1",
+    "iconv-lite": "^0.4.13",
     "koa": "^1.1.2",
     "koa-favicon": "^1.2.1",
     "koa-router": "^5.4.0",

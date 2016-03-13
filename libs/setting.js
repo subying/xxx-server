@@ -1,5 +1,6 @@
 /*
- * 设置模块
+ * @description 设置模块
+ * @auth subying
  */
 
 const config = require('../config');

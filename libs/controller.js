@@ -1,5 +1,6 @@
 /*
-	controller
+ * @description controller 控制器
+ * @auth subying
  */
 const _ = require('lodash');
 const fs = require('fs');
@@ -17,6 +18,7 @@ var controllerMain = {
 			yield controller.bind(this)();
 		});
 
+		/*
 		router.get(/\/test$/,function*(){
 			var controller = _self.getContrller('test');
 			yield controller.bind(this)();
@@ -29,6 +31,19 @@ var controllerMain = {
 		//优先级原因
 		router.get('/:id',function*(){
 			var controller = _self.getContrller('index');
+			yield controller.bind(this)();
+		});
+		*/
+		router.get('/list/:id/:page',function*(){
+			var controller = _self.getContrller('list');
+			yield controller.bind(this)();
+		});
+		router.get('/detail/:id/:sid',function*(){
+			var controller = _self.getContrller('detail');
+			yield controller.bind(this)();
+		});
+		router.get('/show/:id/:sid/:page',function*(){
+			var controller = _self.getContrller('show');
 			yield controller.bind(this)();
 		});
 	},
