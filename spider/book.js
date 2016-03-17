@@ -6,6 +6,7 @@ const Iconv = require('iconv-lite');//处理中文编码
 const _ = require('lodash');
 
 const tool = require('../libs/tool');
+var cache = require('../libs/cache');
 const siteUrl = 'http://www.haxsk.com/';
 
 
@@ -27,6 +28,10 @@ function *indexSpider(){
 			});
 		}
 	});
+
+	console.log(yield cache.set('key','test123'))
+
+
 
 	return JSON.stringify({
 		code:0,
