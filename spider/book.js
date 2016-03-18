@@ -14,24 +14,27 @@ const siteUrl = 'http://www.haxsk.com/';
  * @description 抓取首页分类
 */
 function *indexSpider(){
-	var content = yield tool.getHttpContent(siteUrl,{});
-	var $ = cheerio.load(Iconv.decode(content,'gb2312'));
+	var indexData = yield cache.get('indexData'),_arr=[],content='';
+	if(!indexData){
+		content = yield tool.getHttpContent(siteUrl,{});
+		content = Iconv.decode(content,'gb2312');
+		var $ = cheerio.load(content);
+		var list = $('#subnav .hd p').eq(0).find('a');
 
-	var list = $('#subnav .hd p').eq(0).find('a');
-	var _arr = [];
-	list.map((index,obj)=>{
-		var $elem = $(obj);
-		if(index>0){
-			_arr.push({
-				href: $elem.attr('href').replace(/\.htm[l]?/g,'').replace('xiaoshuo','list'),
-				text: $elem.text()
-			});
-		}
-	});
-
-	console.log(yield cache.set('key','test123'))
-
-
+		list.map((index,obj)=>{
+			var $elem = $(obj);
+			if(index>0){
+				_arr.push({
+					href: $elem.attr('href').replace(/\.htm[l]?/g,'').replace('xiaoshuo','list'),
+					text: $elem.text()
+				});
+			}
+		});
+		yield cache.set('indexData',JSON.stringify(_arr));
+	}else{
+		_arr = JSON.parse(indexData);
+	}
+	
 
 	return JSON.stringify({
 		code:0,
@@ -43,22 +46,32 @@ function *indexSpider(){
  * @description 抓取列表
 */
 function *listSpider(params){
-	var _url = siteUrl+'xiaoshuo/'+params.id+'/'+params.page+'.htm';
-	var content = yield tool.getHttpContent(_url,{});
-	var $ = cheerio.load(Iconv.decode(content,'gb2312'));
+	var listId = 'list-'+params.id+'-'+params.page,_arr=[],title='';
+	var listData = yield cache.get(listId);
 
-	var title = $('#content h2').text();
-	var list = $('#content li');
-	var _arr = [];
-	list.map((index,obj)=>{
-		var $elem = $(obj).find('a').eq(0);
-		var _href = $elem.attr('href');
-		_href = '/'+_href.replace(/\.htm[l]?/g,'').replace('files/article/info','detail').replace(siteUrl,'')
-		_arr.push({
-			href: _href,
-			text: $elem.text()
+	if(!listData){
+		var _url = siteUrl+'xiaoshuo/'+params.id+'/'+params.page+'.htm';
+		var content = yield tool.getHttpContent(_url,{});
+		var $ = cheerio.load(Iconv.decode(content,'gb2312'));
+
+		var title = $('#content h2').text();
+		var list = $('#content li');
+		list.map((index,obj)=>{
+			var $elem = $(obj).find('a').eq(0);
+			var _href = $elem.attr('href');
+			_href = '/'+_href.replace(/\.htm[l]?/g,'').replace('files/article/info','detail').replace(siteUrl,'')
+			_arr.push({
+				href: _href,
+				text: $elem.text()
+			});
 		});
-	});
+
+		yield cache.set(listId,JSON.stringify({data: _arr,title: title}));
+	}else{
+		listData = JSON.parse(listData);
+		_arr = listData.data;
+		title = listData.title;
+	}
 
 	return JSON.stringify({
 		code:0,
@@ -69,26 +82,36 @@ function *listSpider(params){
 
 
 function *detailSpider(params){
-	var _upath = params.id+'/'+params.sid;
-	var _url = siteUrl+'files/article/html/'+ _upath +'/index.html';
+	var detailId = 'detail-'+params.id+'-'+params.sid,_arr=[],title='';
+	var detailData = yield cache.get(detailId);
 
-	var content = yield tool.getHttpContent(_url,{});
-	var $ = cheerio.load(Iconv.decode(content,'gb2312'));
+	if(!detailData){
+		var _upath = params.id+'/'+params.sid;
+		var _url = siteUrl+'files/article/html/'+ _upath +'/index.html';
 
-	var title = $('title').text().split('_')[0];
-	var list = $('table.acss .ccss a');
-	var _arr = [];
-	list.map((index,obj)=>{
-		var $elem = $(obj);
-		var page = $elem.attr('href').replace(/\.htm[l]?/g,'');
-		_arr.push({
-			href: '/show/'+ _upath +'/'+page,
-			text: $elem.text(),
-			page: parseInt(page,10)
+		var content = yield tool.getHttpContent(_url,{});
+		var $ = cheerio.load(Iconv.decode(content,'gb2312'));
+
+		var title = $('title').text().split('_')[0];
+		var list = $('table.acss .ccss a');
+		list.map((index,obj)=>{
+			var $elem = $(obj);
+			var page = $elem.attr('href').replace(/\.htm[l]?/g,'');
+			_arr.push({
+				href: '/show/'+ _upath +'/'+page,
+				text: $elem.text(),
+				page: parseInt(page,10)
+			});
 		});
-	});
 
-	_arr = _.sortBy(_arr,'page');
+		_arr = _.sortBy(_arr,'page');
+		yield cache.set(detailId,JSON.stringify({data: _arr,title: title}));
+	}else{
+		detailData = JSON.parse(detailData);
+		_arr = detailData.data;
+		title = detailData.title;
+	}
+	
 
 	return JSON.stringify({
 		code:0,
@@ -98,18 +121,30 @@ function *detailSpider(params){
 }
 
 function *showSpider(params){
-	var _upath = params.id+'/'+params.sid+'/'+params.page;
-	var _url = siteUrl+'files/article/html/'+ _upath +'.html';
+	var showId = 'show-'+params.id+'-'+params.sid+'-'+params.page,_arr=[],title='';
+	var showData = yield cache.get(showId);
 
-	var content = yield tool.getHttpContent(_url,{});
-	var $ = cheerio.load(Iconv.decode(content,'gb2312'));
+	if(!showData){
+		var _upath = params.id+'/'+params.sid+'/'+params.page;
+		var _url = siteUrl+'files/article/html/'+ _upath +'.html';
 
-	var title = $('title').text().split('-在线')[0];
-	var conElem = $('#contentsea3c');
-	conElem.find('span').remove();
-	conElem.find('font').remove();
-	var con = conElem.html();
-	con = con.replace(/&#xA0;&#xA0;/g,'&#xA0;');
+		var content = yield tool.getHttpContent(_url,{});
+		var $ = cheerio.load(Iconv.decode(content,'gb2312'));
+
+		var title = $('title').text().split('-在线')[0];
+		var conElem = $('#contentsea3c');
+		conElem.find('span').remove();
+		conElem.find('font').remove();
+		var con = conElem.html();
+		con = con.replace(/&#xA0;&#xA0;/g,'&#xA0;');
+
+		yield cache.set(showId,JSON.stringify({data: con,title: title}));
+	}else{
+		showData = JSON.parse(showData);
+		con = showData.data;
+		title = showData.title;
+	}
+	
 
 	return JSON.stringify({
 		code:0,

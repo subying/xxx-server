@@ -20,7 +20,7 @@ function connectSever(){
 connectSever();
 
 var cacheCtrl = {
-	set: function(key,value){
+	set: (key,value)=>{
 		return new Promise(function(resolve, reject) {
 		  client.set(key,value,(err,reply)=>{
 		    resolve(reply);
@@ -28,13 +28,32 @@ var cacheCtrl = {
 		  }); 
 		});
 	},
-	get: function(key){
+	get: (key)=>{
 		return new Promise(function(resolve, reject) {
 		  client.get(key,(err,reply)=>{
 		    resolve(reply);
 		    //reject
 		  }); 
 		});
+	},
+	hset: (key,value)=>{
+		return new Promise(function(resolve, reject) {
+		  client.hset(key,value,(err,reply)=>{
+		    resolve(reply);
+		    //reject
+		  }); 
+		});
+	},
+	hget: (key)=>{
+		return new Promise(function(resolve, reject) {
+		  client.hget(key,(err,reply)=>{
+		    resolve(reply);
+		    //reject
+		  }); 
+		});
+	},
+	expire: (key,secs)=>{
+		client.expire(key,secs);
 	}
 }
 /*
@@ -51,6 +70,5 @@ client.on("connect",()=>{
 	  });
 });
 */
-console.log(cacheCtrl);
 
 module.exports = cacheCtrl;
