@@ -7,7 +7,7 @@ const Url = require('url');
 const queryStr = require('querystring');
 
 const _ = require('lodash');
-var BufferHelper = require('bufferhelper'); 
+var BufferHelper = require('bufferhelper');
 
 /*
  *@description 获取网页内容
@@ -44,8 +44,8 @@ exports.postUrl = (url, data,headers,callback, errback)=>{
 	var httpType = option.protocol.indexOf('https')>-1?https:http;
 	var sendData = _.isObject(data)?queryStr.stringify(data):data;
 	option.headers = {
-        "Content-Type": 'application/x-www-form-urlencoded', 
-        "Content-Length": sendData.length 
+        "Content-Type": 'application/x-www-form-urlencoded',
+        "Content-Length": sendData.length
     };
 
 	var req = httpType.request(option,(res)=>{
@@ -73,6 +73,7 @@ exports.getHttpContent = (url,headers)=>{
 		exports.getUrl(url, headers,function(content) {
 			resolve(content);
 		}, function(err) {
+			console.log(err);
 			reject(err);
 		});
 	});

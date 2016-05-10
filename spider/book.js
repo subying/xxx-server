@@ -34,7 +34,7 @@ function *indexSpider(){
 	}else{
 		_arr = JSON.parse(indexData);
 	}
-	
+
 
 	return JSON.stringify({
 		code:0,
@@ -96,12 +96,16 @@ function *detailSpider(params){
 		var list = $('table.acss .ccss a');
 		list.map((index,obj)=>{
 			var $elem = $(obj);
-			var page = $elem.attr('href').replace(/\.htm[l]?/g,'');
-			_arr.push({
-				href: '/show/'+ _upath +'/'+page,
-				text: $elem.text(),
-				page: parseInt(page,10)
-			});
+			var _href = $elem.attr('href');
+			if(_href){
+				var page = _href.replace(/\.htm[l]?/g,'');
+				_arr.push({
+					href: '/show/'+ _upath +'/'+page,
+					text: $elem.text(),
+					page: parseInt(page,10)
+				});
+			}
+
 		});
 
 		_arr = _.sortBy(_arr,'page');
@@ -111,7 +115,7 @@ function *detailSpider(params){
 		_arr = detailData.data;
 		title = detailData.title;
 	}
-	
+
 
 	return JSON.stringify({
 		code:0,
@@ -144,7 +148,7 @@ function *showSpider(params){
 		con = showData.data;
 		title = showData.title;
 	}
-	
+
 
 	return JSON.stringify({
 		code:0,
