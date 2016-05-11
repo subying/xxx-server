@@ -14,8 +14,7 @@ var controllerMain = {
 	init: (router)=>{
 		var _self = controllerMain;
 		router.get('/',function*(){
-			var controller = _self.getContrller('index');
-			yield controller.bind(this)();
+			yield _self.runController.bind(this)('index');
 		});
 
 		/*
@@ -27,7 +26,7 @@ var controllerMain = {
 		router.get('/test/',function*(){
 			this.body = 'test-all';
 		});
-		
+
 		//优先级原因
 		router.get('/:id',function*(){
 			var controller = _self.getContrller('index');
@@ -35,17 +34,24 @@ var controllerMain = {
 		});
 		*/
 		router.get('/list/:id/:page',function*(){
-			var controller = _self.getContrller('list');
-			yield controller.bind(this)();
+			yield _self.runController.bind(this)('list');
 		});
 		router.get('/detail/:id/:sid',function*(){
-			var controller = _self.getContrller('detail');
-			yield controller.bind(this)();
+			yield _self.runController.bind(this)('detail');
 		});
 		router.get('/show/:id/:sid/:page',function*(){
-			var controller = _self.getContrller('show');
-			yield controller.bind(this)();
+			yield _self.runController.bind(this)('show');
 		});
+	},
+	runController: function* (name){
+		var _self = controllerMain;
+		try{
+			var controller = _self.getContrller(name);
+			yield controller.bind(this)();
+		}catch(e){
+			console.log(e);
+			this.body = e;
+		}
 	},
 	/*
 	 * @description 获取控制器
@@ -53,7 +59,7 @@ var controllerMain = {
 	getContrller: (name)=>{
 		var _path = _controllerPath+name+'.js';
 
-		//转换文件绝对路径 
+		//转换文件绝对路径
 		var filePath = path.resolve(__dirname,_path);
 
 		//判断文件是否存在
