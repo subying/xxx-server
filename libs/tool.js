@@ -16,7 +16,9 @@ exports.getUrl = (url, headers,callback, errback)=>{
 	var bufferHelper = new BufferHelper(),
 		option = Url.parse(url);
 	option.method = 'GET';
-	option.headers = {};
+	option.headers = {
+		'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36'
+	};
 	var httpType = option.protocol.indexOf('https')>-1?https:http;
 	var req = httpType.request(option,(res)=>{
 		res.on('data',(chunk)=>{
@@ -40,13 +42,13 @@ exports.postUrl = (url, data,headers,callback, errback)=>{
 	var result,
 		option = Url.parse(url);
 	option.method = 'POST';
-	option.headers = {};
 	var httpType = option.protocol.indexOf('https')>-1?https:http;
 	var sendData = _.isObject(data)?queryStr.stringify(data):data;
 	option.headers = {
-        "Content-Type": 'application/x-www-form-urlencoded',
-        "Content-Length": sendData.length
-    };
+		"Content-Type": 'application/x-www-form-urlencoded',
+        "Content-Length": sendData.length,
+		'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36'
+	};
 
 	var req = httpType.request(option,(res)=>{
 		res.setEncoding('utf8');
@@ -71,6 +73,7 @@ exports.postUrl = (url, data,headers,callback, errback)=>{
 exports.getHttpContent = (url,headers)=>{
 	return new Promise(function(resolve, reject) {
 		exports.getUrl(url, headers,function(content) {
+			console.log(content);
 			resolve(content);
 		}, function(err) {
 			console.log(err);
