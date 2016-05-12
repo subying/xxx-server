@@ -17,7 +17,8 @@ exports.getUrl = (url, headers,callback, errback)=>{
 		option = Url.parse(url);
 	option.method = 'GET';
 	option.headers = {
-		'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36'
+		'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36',
+		'Connection':'keep-alive'
 	};
 	var httpType = option.protocol.indexOf('https')>-1?https:http;
 	var req = httpType.request(option,(res)=>{
@@ -48,7 +49,8 @@ exports.postUrl = (url, data,headers,callback, errback)=>{
 	option.headers = {
 		"Content-Type": 'application/x-www-form-urlencoded',
         "Content-Length": sendData.length,
-		'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36'
+		'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36',
+		'Connection':'keep-alive'
 	};
 
 	var req = httpType.request(option,(res)=>{
