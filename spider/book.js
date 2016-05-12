@@ -131,7 +131,7 @@ function *showSpider(params){
 	if(!showData){
 		var _upath = params.id+'/'+params.sid+'/'+params.page;
 		var _url = siteUrl+'files/article/html/'+ _upath +'.html';
-
+		console.log(_url);
 		var content = yield tool.getHttpContent(_url,{});
 		console.log('con',content);
 		var $ = cheerio.load(Iconv.decode(content,'gb2312'));
