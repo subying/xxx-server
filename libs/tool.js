@@ -73,10 +73,10 @@ exports.postUrl = (url, data,headers,callback, errback)=>{
 exports.getHttpContent = (url,headers)=>{
 	return new Promise(function(resolve, reject) {
 		exports.getUrl(url, headers,function(content) {
-			console.log(content);
+			console.log('getCon='+content);
 			resolve(content);
 		}, function(err) {
-			console.log(err);
+			console.log('getHttp='+err);
 			reject(err);
 		});
 	});
