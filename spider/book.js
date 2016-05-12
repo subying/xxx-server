@@ -128,12 +128,12 @@ function *showSpider(params){
 	var showId = 'show-'+params.id+'-'+params.sid+'-'+params.page,_arr=[],title='';
 	var showData = yield cache.get(showId);
 
-	console.log(showData);
 	if(!showData){
 		var _upath = params.id+'/'+params.sid+'/'+params.page;
 		var _url = siteUrl+'files/article/html/'+ _upath +'.html';
 
 		var content = yield tool.getHttpContent(_url,{});
+		console.log('con',content);
 		var $ = cheerio.load(Iconv.decode(content,'gb2312'));
 
 		var title = $('title').text().split('-在线')[0];
