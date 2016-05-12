@@ -21,7 +21,7 @@ exports.getUrl = (url, headers,callback, errback)=>{
 	};
 	var httpType = option.protocol.indexOf('https')>-1?https:http;
 	var req = httpType.request(option,(res)=>{
-		console.log('header:'+res.headers);
+		console.dir(res.headers);
 		res.on('data',(chunk)=>{
 			bufferHelper.concat(chunk);
 		});
