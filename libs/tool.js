@@ -32,6 +32,7 @@ exports.getUrl = (url, headers,callback, errback)=>{
 		});
 	});
 	req.on('error',(e)=>{
+		console.log(e);
         errback && errback(e.message);
     });
     req.end()
