@@ -21,6 +21,7 @@ exports.getUrl = (url, headers,callback, errback)=>{
 	};
 	var httpType = option.protocol.indexOf('https')>-1?https:http;
 	var req = httpType.request(option,(res)=>{
+		console.log('header:'+res.headers);
 		res.on('data',(chunk)=>{
 			bufferHelper.concat(chunk);
 		});
@@ -73,10 +74,9 @@ exports.postUrl = (url, data,headers,callback, errback)=>{
 exports.getHttpContent = (url,headers)=>{
 	return new Promise(function(resolve, reject) {
 		exports.getUrl(url, headers,function(content) {
-			console.log('getCon='+content);
 			resolve(content);
 		}, function(err) {
-			console.log('getHttp='+err);
+			console.log('getHttpErr='+err);
 			reject(err);
 		});
 	});

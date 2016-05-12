@@ -133,7 +133,6 @@ function *showSpider(params){
 		var _url = siteUrl+'files/article/html/'+ _upath +'.html';
 		console.log(_url);
 		var content = yield tool.getHttpContent(_url,{});
-		console.log('con',content);
 		var $ = cheerio.load(Iconv.decode(content,'gb2312'));
 
 		var title = $('title').text().split('-在线')[0];
