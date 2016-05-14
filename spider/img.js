@@ -41,9 +41,10 @@ function *showSpider(params){
     var _url = siteUrl+params.id+'.html',_arr=[],title='';
     var content = yield tool.getHttpContent(_url,{});
     var $ = cheerio.load(Iconv.decode(content,'gb2312'));
-    var page = $('.page-ch').eq(0).text().replace(/.*(\d+).*/,'$1');
+    var page = $('.page-ch').eq(0).text().replace(/[^\d]*(\d+)[^\d]*/,'$1');
     var imgUrl = $('.content-pic img').eq(0).attr('src').replace(/(.*)\/\d\.jpg/,'$1');
     title = $('h5').text();
+    page = parseInt(page,10);
 
     for(let i=1;i<=page;i++){
         _arr.push({
