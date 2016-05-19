@@ -6,6 +6,8 @@
 const router = require('koa-router')();
 const setting = require('./setting');
 const setController = require('./controller');
+const log4js = require('log4js');
+const logger = log4js.getLogger('router');
 
 module.exports = (app)=>{
 	app.use(router.routes());
@@ -14,8 +16,6 @@ module.exports = (app)=>{
 	setController(router);
 
 	return function *(next){
-		console.log(this.request.url,this.status);
-
 		//如果状态不是200 则表示没有控制器匹配成功
 		if(this.status != 200){
 			this.status = 404;

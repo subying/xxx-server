@@ -5,6 +5,8 @@
 const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
+const log4js = require('log4js');
+const logger = log4js.getLogger('controller');
 
 var setting = require('./setting');
 
@@ -49,7 +51,7 @@ var controllerMain = {
 			var controller = _self.getContrller(name);
 			yield controller.bind(this)();
 		}catch(e){
-			console.log(e);
+			logger.error(e);
 			this.body = e;
 		}
 	},
@@ -66,6 +68,7 @@ var controllerMain = {
 		if(fs.existsSync(filePath)){
 			return require(_path);
 		}else{
+			logger.error('controller is not exists');
 			throw Error('controller is not exists');
 		}
 	}
