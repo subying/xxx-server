@@ -44,6 +44,14 @@ var controllerMain = {
 		router.get('/show/:id/:sid/:page',function*(){
 			yield _self.runController.bind(this)('show');
 		});
+
+		router.get('/img/list',function*(){
+			yield _self.runController.bind(this)('imgList');
+		});
+
+		router.get('/img/show/:id',function*(){
+			yield _self.runController.bind(this)('imgShow');
+		});
 	},
 	runController: function* (name){
 		var _self = controllerMain;
