@@ -10,8 +10,9 @@ const log4js = require('log4js');
 //这里配置  全局通用
 log4js.configure({
   appenders: [
-    { type: 'console' },
-  ]
+    { type: 'console',layout:{type:'basic'} }
+  ],
+  replaceConsole: true
 });
 
 const logger = log4js.getLogger('app');
