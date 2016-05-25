@@ -7,6 +7,13 @@ const middleware = require('./libs/middleware');
 const router     = require('./libs/router');
 
 const log4js = require('log4js');
+//这里配置  全局通用
+log4js.configure({
+  appenders: [
+    { type: 'console' },
+  ]
+});
+
 const logger = log4js.getLogger('app');
 
 app.keys = 'xxx-server';//设置签名Cookie密钥  在进行cookie签名时，只有设置 signed 为 true 的时候，才会使用密钥进行加密：
