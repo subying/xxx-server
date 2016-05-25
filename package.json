@@ -1,6 +1,6 @@
 {
   "name": "xxx-server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "xxx-server",
   "main": "app.js",
   "dependencies": {
