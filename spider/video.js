@@ -42,10 +42,9 @@ function *listSpider(){
 */
 function *showSpider(params){
     var _url = siteUrl+'/load.php?pid='+params.id+'',title='',videoUrl='',_id='videoPid'+params.id;
-    var showData = yield cache.get(_id);
-    if(!showData){
+    //var showData = yield cache.get(_id);
+    //if(!showData){
         var content = yield tool.getHttpContent(_url,{});
-        console.log(content.toString());
         var str = content.toString().replace(/[\s\r]*/g,'');
         var regx = /https\:\/\/(\d|[a-zA-Z]|=|%|-|&|\.|\/|\?)+/g;
         var arr = str.match(regx);
@@ -53,11 +52,11 @@ function *showSpider(params){
         yield cache.set(_id,JSON.stringify({sd: arr[0],hd: arr[1]}));
 
         videoUrl = arr[1];
-    }else{
-        showData = JSON.parse(showData);
-        videoUrl = showData.hd;
-    }
-
+    //}else{
+    //    showData = JSON.parse(showData);
+    //    videoUrl = showData.hd;
+    //}
+    console.log(arr[1]);
 
     title = '';
 

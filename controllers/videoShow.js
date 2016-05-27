@@ -10,8 +10,6 @@ module.exports = function *(){
 
 	if(Number(result.code)) throw Error('err');
 
-    console.log(result);
-
 	videoUrl = result.videoUrl;
     title = result.title;
 
