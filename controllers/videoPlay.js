@@ -8,17 +8,20 @@ module.exports = function *(){
     var _id = 'videoPid'+this.params.id;
     var playData = yield cache.get(_id);
 
-    console.log(playData,playData.hd);
-    if(playData && playData.hd){
-        var options = {
-            url: playData.hd,
-            headers: {
-                'User-Agent': 'subying-req',
-                'Range': this.headers['range']
-            }
-        };
-        var x = request(options);
-        this.body = x;
+    if(playData){
+        playData = JSON.parse(playData);
+        if(playData.hd){
+            var options = {
+                url: playData.hd,
+                headers: {
+                    'User-Agent': 'subying-req',
+                    'Range': this.headers['range']
+                }
+            };
+            var x = request(options);
+            this.body = x;
+        }
+
     }
 
     //request('http://statics.subying.com/resource/vi.mp4').pipe(this.res);
