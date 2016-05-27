@@ -45,6 +45,7 @@ function *showSpider(params){
     var showData = yield cache.get(_id);
     if(!showData){
         var content = yield tool.getHttpContent(_url,{});
+        console.log(content);
         var str = content.replace(/[\s\r]*/g,'');
         var regx = /https\:\/\/(\d|[a-zA-Z]|=|%|-|&|\.|\/|\?)+/g;
         var arr = str.match(regx);
