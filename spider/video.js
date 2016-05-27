@@ -61,7 +61,7 @@ function *showSpider(params){
 
 	return JSON.stringify({
 		code:0,
-		videoUrl: 'video/play/'+params.id,
+		videoUrl: '/video/play/'+params.id,
         title: title
 	});
 

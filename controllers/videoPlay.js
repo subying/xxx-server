@@ -7,6 +7,7 @@ var cache = require('../libs/cache');
 module.exports = function *(){
     var _id = 'videoPid'+this.params.id;
     var playData = yield cache.get(_id);
+    console.log(_id,playData);
     if(playData && playData.hd){
         var options = {
             url: playData.hd,
