@@ -1,14 +1,16 @@
 /*
  * @description 详情
  */
-var img = require('../spider/video');
+var video = require('../spider/video');
 
 module.exports = function *(){
 	var result={},videoUrl=[],title='';
-	result = yield img.show(this.params);
+	result = yield video.show(this.params);
 	result = JSON.parse(result);
 
 	if(Number(result.code)) throw Error('err');
+
+    console.log(result);
 
 	videoUrl = result.videoUrl;
     title = result.title;
