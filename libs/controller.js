@@ -64,6 +64,10 @@ var controllerMain = {
         router.get('/video/play/:id',function*(){
             yield _self.runController.bind(this)('videoPlay');
         });
+
+        router.get('/video/play/:id/:quality',function*(){
+            yield _self.runController.bind(this)('videoPlay');
+        });
 	},
 	runController: function* (name){
 		var _self = controllerMain;

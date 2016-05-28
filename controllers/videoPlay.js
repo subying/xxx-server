@@ -6,13 +6,15 @@ var cache = require('../libs/cache');
 
 module.exports = function *(){
     var _id = 'videoPid'+this.params.id;
+    var _quality = this.params.quality=='hd'?'hd':'sd';
+
     var playData = yield cache.get(_id);
 
     if(playData){
         playData = JSON.parse(playData);
-        if(playData.hd){
+        if(playData[_quality]){
             var options = {
-                url: playData.hd,
+                url: playData[_quality],
                 headers: {
                     'User-Agent': 'subying-req',
                     'Range': this.headers['range']
