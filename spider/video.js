@@ -38,7 +38,7 @@ function *listSpider(){
 }
 
 /*
- * @description 抓取列表
+ * @description 详情
 */
 function *showSpider(params){
     var _url = siteUrl+'/load.php?pid='+params.id+'',title='',videoUrl='',_id='videoPid'+params.id;
@@ -56,6 +56,7 @@ function *showSpider(params){
     //    showData = JSON.parse(showData);
     //    videoUrl = showData.hd;
     // }
+    console.log(arr[0]);
 
     title = '';
 
