@@ -20,6 +20,7 @@ module.exports = function *(){
                     'Range': this.headers['range']
                 }
             };
+            this.type = 'video/mp4';
             var x = request(options);
             this.body = x;
         }
