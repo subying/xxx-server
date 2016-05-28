@@ -56,7 +56,6 @@ function *showSpider(params){
     //    showData = JSON.parse(showData);
     //    videoUrl = showData.hd;
     // }
-    console.log(arr[0]);
 
     title = '';
 
