@@ -13,7 +13,6 @@ module.exports = function *(){
     if(playData){
         playData = JSON.parse(playData);
         if(playData[_quality]){
-            console.log(playData[_quality]);
             var options = {
                 url: playData[_quality],
                 headers: {
