@@ -1,6 +1,6 @@
 {
   "name": "xxx-server",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "xxx-server",
   "main": "app.js",
   "dependencies": {
@@ -9,12 +9,31 @@
     "ejs": "^2.4.1",
     "iconv-lite": "^0.4.13",
     "koa": "^1.1.2",
+    "koa-compress": "^1.0.9",
     "koa-favicon": "^1.2.1",
     "koa-router": "^5.4.0",
     "koa-session": "^3.3.1",
     "lodash": "^4.6.1",
     "log4js": "^0.6.36",
     "redis": "^2.5.2"
+  },
+  "devDependencies": {
+    "antd": "^1.6.4",
+    "bufferhelper": "^0.2.1",
+    "cheerio": "^0.20.0",
+    "ejs": "^2.4.1",
+    "gulp": "^3.9.1",
+    "iconv-lite": "^0.4.13",
+    "koa": "^1.1.2",
+    "koa-favicon": "^1.2.1",
+    "koa-router": "^5.4.0",
+    "koa-session": "^3.3.1",
+    "lodash": "^4.6.1",
+    "log4js": "^0.6.36",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "redis": "^2.5.2",
+    "webpack": "^1.13.1"
   },
   "scripts": {
     "test": ""
