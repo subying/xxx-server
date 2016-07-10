@@ -1,6 +1,6 @@
 {
   "name": "xxx-server",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "xxx-server",
   "main": "app.js",
   "dependencies": {
@@ -13,6 +13,7 @@
     "koa-favicon": "^1.2.1",
     "koa-router": "^5.4.0",
     "koa-session": "^3.3.1",
+    "koa-static": "^2.0.0",
     "lodash": "^4.6.1",
     "log4js": "^0.6.36",
     "redis": "^2.5.2"
@@ -28,6 +29,7 @@
     "koa-favicon": "^1.2.1",
     "koa-router": "^5.4.0",
     "koa-session": "^3.3.1",
+    "koa-static": "^2.0.0",
     "lodash": "^4.6.1",
     "log4js": "^0.6.36",
     "react": "^15.2.1",

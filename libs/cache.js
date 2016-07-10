@@ -4,16 +4,20 @@
  */
 const redis = require("redis");
 var client = redis.createClient();
+var errFlag = false;
+var redisMap = new Map();
 
 client.on("error", function(err) {
-  console.log("Error " + err);
+    console.log("Redis Error " + err);
+    client.quit();
+    errFlag = true;
 });
 
 function connectSever(){
 	return new Promise(function(resolve, reject) {
 	  client.on("connect",()=>{
 	    resolve();
-	  }); 
+	  });
 	});
 }
 
@@ -21,40 +25,73 @@ connectSever();
 
 var cacheCtrl = {
 	set: (key,value)=>{
-		return new Promise(function(resolve, reject) {
-		  client.set(key,value,(err,reply)=>{
-		    resolve(reply);
-		    //reject
-		  }); 
+
+        return new Promise(function(resolve, reject) {
+            if(errFlag){
+                redisMap.set(key,value);
+                resolve();
+            }else{
+                client.set(key,value,(err,reply)=>{
+                resolve(reply);
+                //reject
+                });
+            }
 		});
+
 	},
 	get: (key)=>{
 		return new Promise(function(resolve, reject) {
-		  client.get(key,(err,reply)=>{
-		    resolve(reply);
-		    //reject
-		  }); 
+            if(errFlag){
+                resolve(redisMap.get(key));
+            }else{
+        		  client.get(key,(err,reply)=>{
+        		    resolve(reply);
+        		    //reject
+        		  });
+            }
 		});
 	},
 	hset: (key,value)=>{
 		return new Promise(function(resolve, reject) {
-		  client.hset(key,value,(err,reply)=>{
-		    resolve(reply);
-		    //reject
-		  }); 
-		});
+            if(errFlag){
+                redisMap.set(key,value);
+                resolve();
+            }else{
+    		  client.hset(key,value,(err,reply)=>{
+    		    resolve(reply);
+    		    //reject
+    		  });
+            }
+    	});
 	},
 	hget: (key)=>{
-		return new Promise(function(resolve, reject) {
-		  client.hget(key,(err,reply)=>{
-		    resolve(reply);
-		    //reject
-		  }); 
-		});
+    		return new Promise(function(resolve, reject) {
+                if(errFlag){
+                    resolve(redisMap.get(key));
+                }else{
+                    client.hget(key,(err,reply)=>{
+                        resolve(reply);
+                        //reject
+                    });
+                }
+    		});
 	},
 	expire: (key,secs)=>{
-		client.expire(key,secs);
-	}
+        if(errFlag){
+            //
+            if(this.timer[key]){
+                clearTimeout(this.timer[key]);
+                this.timer[key] = null;
+            }
+
+            this.timer[key] = setTimeout(function(){
+                redisMap.set(key,null);
+            },secs*1000);
+        }else{
+	        client.expire(key,secs);
+        }
+	},
+    timer: {}
 }
 /*
 
