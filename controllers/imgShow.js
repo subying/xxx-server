@@ -13,8 +13,12 @@ module.exports = function *(){
 	list = result.data;
     title = result.title;
 
-	this.render({
+	// this.render({
+	// 	list: list,
+	// 	title: title
+	// },'imgShow');
+	this.body={
 		list: list,
 		title: title
-	},'imgShow');
+	}
 };

@@ -20,10 +20,13 @@ function *listSpider(){
 
     list.map((index,obj)=>{
 	    var $elem = $(obj).find('a').eq(0);
+        var imgSrc = $elem.children().attr('src');
+
 		var _href = $elem.attr('href');
 		_href = '/'+_href.replace(/\.htm[l]?/g,'').replace(siteUrl,'img/show/')
 		_arr.push({
 			href: _href,
+            img: imgSrc,
 			text: $elem.text()
 		});
 	});
