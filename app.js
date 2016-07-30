@@ -30,7 +30,9 @@ app
         threshold: 2048,
         flush: require('zlib').Z_SYNC_FLUSH
     }))
-    .use(staticServer(__dirname + '/statics'))
+    .use(staticServer(__dirname + '/statics',{
+        hidden: true//允许隐藏文件
+    }))
 	.use(middleware())
 	.use(router(app))
 	.use(favicon(__dirname + '/favicon.ico'))

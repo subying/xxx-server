@@ -12,9 +12,9 @@ module.exports = function *(){
 
 	list = result.data;
 
-	// this.render({
-	// 	list: list,
-	// 	title: 'img test'
-	// },'imgList');
-	this.body=list;
+	this.render({
+		list: list,
+		title: 'img test'
+	},'imgList');
+	//this.body=list;
 };
