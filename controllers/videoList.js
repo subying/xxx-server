@@ -5,7 +5,8 @@ var video = require('../spider/video');
 
 module.exports = function *(){
 	var result={},list=[];
-	result = yield video.list();
+    var page = this.params.page || 1;
+	result = yield video.list(page);
 	result = JSON.parse(result);
 
 	if(Number(result.code)) throw Error('err');

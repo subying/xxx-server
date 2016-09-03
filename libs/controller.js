@@ -57,6 +57,10 @@ var controllerMain = {
             yield _self.runController.bind(this)('videoList');
         });
 
+        router.get('/video/list/:page',function*(){
+            yield _self.runController.bind(this)('videoList');
+        });
+
         router.get('/video/show/:id',function*(){
             yield _self.runController.bind(this)('videoShow');
         });
