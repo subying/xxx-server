@@ -7,5 +7,9 @@
     },
     "appJsPath":"app",
     "htmlViews": "./views",
-    "mapPath": "./views/map"
+    "mapPath": "./views/map",
+    "proxyHost": {
+        "host":"127.0.0.1",
+        "port": "1080"
+    }
 }

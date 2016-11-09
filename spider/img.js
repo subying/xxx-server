@@ -14,6 +14,7 @@ const siteUrl = 'http://www.mm131.com/xinggan/';
 function *listSpider(){
     var _url = siteUrl,_arr=[];
     var content = yield tool.getHttpContent(_url,{});
+
     var $ = cheerio.load(Iconv.decode(content,'gb2312'));
     var list = $('.list-left dd').not('.page');
 

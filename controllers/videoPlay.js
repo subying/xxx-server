@@ -3,6 +3,10 @@
  */
 var request = require('request');
 var cache = require('../libs/cache');
+const setting = require('../libs/setting');
+var proxyHost = setting.proxyHost;
+var Agent = require('socks5-http-client/lib/Agent');
+var Agents = require('socks5-https-client/lib/Agent');
 
 module.exports = function *(){
     var _id = 'videoPid'+this.params.id;
@@ -12,14 +16,25 @@ module.exports = function *(){
 
     if(playData){
         playData = JSON.parse(playData);
-        if(playData[_quality]){
+        var playUrl = playData[_quality];
+        if(playUrl){
             var options = {
-                url: playData[_quality],
+                url: playUrl,
                 headers: {
                     'User-Agent': 'subying-req',
                     'Range': this.headers['range']
                 }
             };
+
+            //如果有代理
+            if(proxyHost && proxyHost.host && proxyHost.port){
+                options.agentClass = playUrl.indexOf('https')>-1?Agents:Agent;
+                options.agentOptions = {
+                    socksHost: proxyHost.host, // Defaults to 'localhost'.
+                    socksPort: proxyHost.port // Defaults to 1080.
+                }
+            }
+
             this.type = 'video/mp4';
             var x = request(options);
             this.body = x;
