@@ -7,7 +7,7 @@ const _ = require('lodash');
 
 const tool = require('../libs/tool');
 var cache = require('../libs/cache');
-const siteUrl = 'http://www.haxsk.com/';
+const siteUrl = 'http://www.woqudu.net/';
 
 
 /*
@@ -19,13 +19,17 @@ function *indexSpider(){
 		content = yield tool.getHttpContent(siteUrl,{});
 		content = Iconv.decode(content,'gb2312');
 		var $ = cheerio.load(content);
-		var list = $('#subnav .hd p').eq(0).find('a');
+		var list = $('table tr').eq(4).find('a');
 
 		list.map((index,obj)=>{
 			var $elem = $(obj);
+            var _match = [];
+            var _href ;
 			if(index>0){
+                _href = $elem.attr('href');
+                _match = _href.match(/class=(\d+)/);
 				_arr.push({
-					href: $elem.attr('href').replace(/\.htm[l]?/g,'').replace('xiaoshuo','list'),
+					href: '/list/'+_match[1],
 					text: $elem.text()
 				});
 			}
@@ -47,20 +51,24 @@ function *indexSpider(){
  * @description 抓取列表
 */
 function *listSpider(params){
-	var listId = 'list-'+params.id+'-'+params.page,_arr=[],title='';
+    var _page = params.page || 1;
+	var listId = 'list-'+params.id+'-'+_page,_arr=[],title='';
 	var listData = yield cache.get(listId);
 
 	if(!listData){
-		var _url = siteUrl+'xiaoshuo/'+params.id+'/'+params.page+'.htm';
+		var _url = siteUrl+'modules/article/articlelist.php?class='+params.id+'&page='+_page;
+
 		var content = yield tool.getHttpContent(_url,{});
 		var $ = cheerio.load(Iconv.decode(content,'gb2312'));
 
-		var title = $('#content h2').text();
-		var list = $('#content li');
+		var title = $('title').text().split('-')[0];
+		var list = $('.newborder .font14');
 		list.map((index,obj)=>{
-			var $elem = $(obj).find('a').eq(0);
+			var $elem = $(obj);
 			var _href = $elem.attr('href');
-			_href = '/'+_href.replace(/\.htm[l]?/g,'').replace('files/article/info','detail').replace(siteUrl,'')
+            var _match = _href.match(/id=(\d+)/);
+
+			_href = '/detail/'+_match[1];
 			_arr.push({
 				href: _href,
 				text: $elem.text()
@@ -83,17 +91,20 @@ function *listSpider(params){
 
 
 function *detailSpider(params){
-	var detailId = 'detail-'+params.id+'-'+params.sid,_arr=[],title='';
+    var _id = params.id+'';
+    var sid = _id.slice(0,_id.length>4?2:1);
+
+	var detailId = 'detail-'+params.id+'-'+sid,_arr=[],title='';
 	var detailData = yield cache.get(detailId);
 
 	if(!detailData){
-		var _upath = params.id+'/'+params.sid;
+		var _upath = sid+'/'+params.id;
 		var _url = siteUrl+'files/article/html/'+ _upath +'/index.html';
 
 		var content = yield tool.getHttpContent(_url,{});
 		var $ = cheerio.load(Iconv.decode(content,'gb2312'));
 
-		var title = $('title').text().split('_')[0];
+		var title = $('title').text().split('-')[0];
 		var list = $('table.acss .ccss a');
 		list.map((index,obj)=>{
 			var $elem = $(obj);
@@ -132,16 +143,13 @@ function *showSpider(params){
 	if(!showData){
 		var _upath = params.id+'/'+params.sid+'/'+params.page;
 		var _url = siteUrl+'files/article/html/'+ _upath +'.html';
-		console.log(_url);
+
 		var content = yield tool.getHttpContent(_url,{});
 		var $ = cheerio.load(Iconv.decode(content,'gb2312'));
 
-		var title = $('title').text().split('-在线')[0];
-		var conElem = $('#contentsea3c');
-		conElem.find('span').remove();
-		conElem.find('font').remove();
+		var title = $('title').text().split('-我去读文学网')[0];
+		var conElem = $('#content');
 		var con = conElem.html();
-		con = con.replace(/&#xA0;&#xA0;/g,'&#xA0;');
 
 		yield cache.set(showId,JSON.stringify({data: con,title: title}));
 	}else{

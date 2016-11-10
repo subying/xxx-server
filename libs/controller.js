@@ -35,10 +35,14 @@ var controllerMain = {
 			yield controller.bind(this)();
 		});
 		*/
+        router.get('/list/:id',function*(){
+			yield _self.runController.bind(this)('list');
+		});
 		router.get('/list/:id/:page',function*(){
 			yield _self.runController.bind(this)('list');
 		});
-		router.get('/detail/:id/:sid',function*(){
+
+		router.get('/detail/:id',function*(){
 			yield _self.runController.bind(this)('detail');
 		});
 		router.get('/show/:id/:sid/:page',function*(){
