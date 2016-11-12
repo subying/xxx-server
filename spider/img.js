@@ -10,9 +10,14 @@ const siteUrl = 'http://www.mm131.com/xinggan/';
 
 /*
  * @description 抓取列表
+ * @param {Number} page 页数
 */
-function *listSpider(){
+function *listSpider(page){
     var _url = siteUrl,_arr=[];
+    if(page && page>1){
+        _url = _url+'list_6_'+ page +'.html'
+    }
+
     var content = yield tool.getHttpContent(_url,{});
 
     var $ = cheerio.load(Iconv.decode(content,'gb2312'));

@@ -53,6 +53,10 @@ var controllerMain = {
 			yield _self.runController.bind(this)('imgList');
 		});
 
+        router.get('/img/list/:page',function*(){
+			yield _self.runController.bind(this)('imgList');
+		});
+
 		router.get('/img/show/:id',function*(){
 			yield _self.runController.bind(this)('imgShow');
 		});
