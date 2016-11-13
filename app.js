@@ -19,6 +19,12 @@ log4js.configure({
 
 const logger = log4js.getLogger('app');
 
+var React=require('react');
+
+require('node-jsx').install({
+    extension:'.jsx'
+});
+
 app.keys = 'xxx-server';//设置签名Cookie密钥  在进行cookie签名时，只有设置 signed 为 true 的时候，才会使用密钥进行加密：
 
 app

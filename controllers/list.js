@@ -2,6 +2,14 @@
  * @description 列表
  */
 var book = require('../spider/book');
+var React=require('react');
+require('node-jsx').install({
+    extension:'.jsx'
+});
+
+var ReacDOMServer = require('react-dom/server');
+// 服务端引入MyComponent组件
+var BookList =  React.createFactory(require('../components/list.jsx'))
 
 module.exports = function *(){
 	var result={},list=[],title='';
@@ -13,8 +21,11 @@ module.exports = function *(){
 	list = result.data;
 	title = result.title;
 
+    var html = ReacDOMServer.renderToString(BookList({list:list}));
+
 	this.render({
 		list: list,
-		title: title
+		title: title,
+        outputHtml: html
 	},'list');
 };
