@@ -1,7 +1,8 @@
 /*
  * @fileOverview  小说分类列表
 */
-var React = require("react");
+//var React = require("react");
+import React from "react";
 
 class BookList extends React.Component{
     constructor(){

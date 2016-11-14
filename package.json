@@ -4,6 +4,7 @@
   "description": "xxx-server",
   "main": "app.js",
   "dependencies": {
+    "babel-register": "^6.18.0",
     "bufferhelper": "^0.2.1",
     "cheerio": "^0.20.0",
     "ejs": "^2.4.1",

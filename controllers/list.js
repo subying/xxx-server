@@ -3,10 +3,6 @@
  */
 var book = require('../spider/book');
 var React=require('react');
-require('node-jsx').install({
-    extension:'.jsx'
-});
-
 var ReacDOMServer = require('react-dom/server');
 // 服务端引入MyComponent组件
 var BookList =  React.createFactory(require('../components/list.jsx'))
