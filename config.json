@@ -1,9 +1,9 @@
 {
     "port": 3000,
     "path":{
-        "src": "src",
-        "debug": "debug",
-        "dist": "dist"
+        "src": "./statics/src",
+        "debug": "./statics/dist",
+        "dist": "./statics/dist"
     },
     "appJsPath":"app",
     "htmlViews": "./views",
