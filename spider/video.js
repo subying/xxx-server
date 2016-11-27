@@ -10,9 +10,10 @@ const siteUrl = 'http://www.youav.com';
 
 /*
  * @description 抓取列表
+ * @param {Number} page
 */
-function *listSpider(){
-    var _url = siteUrl+'/videos?o=mr',_arr=[];
+function *listSpider(page){
+    var _url = siteUrl+'/videos?o=mr&page='+page,_arr=[];
     var content = yield tool.getHttpContent(_url,{});
     var $ = cheerio.load(content);
     var list = $('.well-sm a');
