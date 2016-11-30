@@ -1,6 +1,6 @@
 {
   "name": "xxx-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "xxx-server",
   "main": "app.js",
   "dependencies": {
@@ -76,7 +76,7 @@
     "dev": "gulp dev --colors",
     "core:dev": "gulp core:dev --colors",
     "core:build": "gulp core:build --colors",
-    "start": "supervisor -i views app"
+    "start": "supervisor -i views,statics app"
   },
   "repository": {
     "type": "git",

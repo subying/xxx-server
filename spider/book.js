@@ -27,7 +27,8 @@ function *indexSpider(){
             var _href ;
 			if(index>0){
                 _href = $elem.attr('href');
-                _match = _href.match(/class=(\d+)/);
+                //_match = _href.match(/class=(\d+)/);
+				_match = _href.match(/\/catalog\/(\d+)\.html/);
 				_arr.push({
 					href: '/list/'+_match[1],
 					text: $elem.text()
