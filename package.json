@@ -1,6 +1,6 @@
 {
   "name": "xxx-server",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "xxx-server",
   "main": "app.js",
   "dependencies": {
@@ -47,7 +47,6 @@
     "gulp": "^3.9.1",
     "gulp-file-include": "^0.13.7",
     "gulp-watch": "^4.3.5",
-    "gulp-webpack": "^1.5.0",
     "iconv-lite": "^0.4.13",
     "img-loader": "^1.2.2",
     "jquery": "^3.0.0",
@@ -69,7 +68,8 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "vinyl-named": "^1.1.0",
-    "webpack": "^1.13.0"
+    "webpack": "^1.13.0",
+    "webpack-stream": "^3.2.0"
   },
   "scripts": {
     "build": "gulp build --colors",

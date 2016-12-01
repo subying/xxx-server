@@ -5,7 +5,7 @@ const path = require('path');
 const gulp = require('gulp');
 const watch = require('gulp-watch');
 
-const webpack = require('gulp-webpack');
+const webpack = require('webpack-stream');
 const fileinclude = require('gulp-file-include');
 const named = require('vinyl-named');
 const through2 = require('through2');
@@ -92,15 +92,20 @@ gulp.task('js:dev',()=>{
 /*dev环境编译执行*/
 gulp.task('dev',['html:build','html:dev','js:dev']);
 
+/*js 重命名方法*/
+function renameModel(file){
+    var _file = file.relative.replace(/\\/g,'/');
+    _file = _file.replace(/\//g,'_');
+    file.named  = path.basename(_file, path.extname(_file));
+    this.queue(file);
+}
+
 /* 编译核心文件 dev模式下 */
 gulp.task('core:dev',()=>{
     var startTime = (new Date()).getTime();
     gulp.src(_jsCoreFile)
         .pipe(named(function(file){
-            var _file = file.relative.replace(/\\/g,'/');
-            _file = _file.replace(/\//g,'_');
-            file.named  = path.basename(_file, path.extname(_file));
-            this.queue(file);
+            renameModel.bind(this)(file);
         }))
         .pipe(webpack(configCore()))
         .pipe(gulp.dest(debugDir+'/'))
@@ -117,14 +122,8 @@ gulp.task('core:build',()=>{
 
     gulp.src(_jsCoreFile)
         .pipe(named(function(file){
-            var _file = file.relative.replace(/\\/g,'/');
-
-            _file = _file.replace(/\//g,'_');
-            file.named  = path.basename(_file, path.extname(_file));
-            this.queue(file);
+            renameModel.bind(this)(file);
         }))
-        //.pipe(webpack(configCore('')))
-        //.pipe(gulp.dest(debugDir+'/'))
         .pipe(webpack(configCore('www')))
         .pipe(gulp.dest(distDir+'/'))
         .on('end',function(){
@@ -139,11 +138,7 @@ gulp.task('build', ['html:build'],()=>{
     var startTime = (new Date()).getTime();
     gulp.src(_jsFile)
         .pipe(named(function(file){
-            var _file = file.relative.replace(/\\/g,'/');
-            _file = _file.replace(/\//g,'_');
-            file.named  = path.basename(_file, path.extname(_file));
-
-            this.queue(file);
+            renameModel.bind(this)(file);
         }))
         .pipe(webpack(configPro))
         .pipe(gulp.dest(distDir+'/'))
