@@ -67,7 +67,7 @@ function *listSpider(params){
 		list.map((index,obj)=>{
 			var $elem = $(obj);
 			var _href = $elem.attr('href');
-            var _match = _href.match(/id=(\d+)/);
+            var _match = _href.match(/\/book\/(\d+)\.html/);
 
 			_href = '/detail/'+_match[1];
 			_arr.push({
