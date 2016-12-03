@@ -7,6 +7,7 @@ const setting = require('../libs/setting');
 var proxyHost = setting.proxyHost;
 var Agent = require('socks5-http-client/lib/Agent');
 var Agents = require('socks5-https-client/lib/Agent');
+var Url = require('url');
 
 module.exports = function *(){
     var _id = 'videoPid'+this.params.id;
@@ -18,6 +19,8 @@ module.exports = function *(){
         playData = JSON.parse(playData);
         var playUrl = playData[_quality];
         if(playUrl){
+            var _opt = Url.parse(playUrl);
+            var scookie = yield cache.get(_opt.host+'-cookie');
             var options = {
                 url: playUrl,
                 headers: {
@@ -25,6 +28,9 @@ module.exports = function *(){
                     'Range': this.headers['range']
                 }
             };
+            if(scookie){
+                options.headers['Cookie']=scookie;
+            }
 
             //如果有代理
             if(proxyHost && proxyHost.host && proxyHost.port){

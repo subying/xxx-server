@@ -9,7 +9,8 @@ const queryStr = require('querystring');
 const _ = require('lodash');
 var BufferHelper = require('bufferhelper');
 
-const setting = require('../libs/setting');
+const setting = require('./setting');
+var cache = require('./cache');
 var proxyHost = setting.proxyHost;
 
 const shttp = require('socks5-http-client');
@@ -20,10 +21,13 @@ const shttps = require('socks5-http-client');
  */
 exports.getUrl = (url, headers,callback, errback)=>{
 	var bufferHelper = new BufferHelper(),
-		option ={};
+	option ={};
     var httpType = url.indexOf('https')>-1?https:http;
 
     option = Url.parse(url);
+	var sname = option.host+'-cookie';
+	var scookie = yield cache.get(sname);
+
 
     //如果有代理
     if(proxyHost && proxyHost.host && proxyHost.port){
@@ -42,22 +46,29 @@ exports.getUrl = (url, headers,callback, errback)=>{
 	option.headers = {
 		'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36'
 	};
+	if(scookie){
+		options.headers['Cookie']=scookie;
+	}
 
 
 	//var httpType = option.path.indexOf('https')>-1?https:http;
 	var req = httpType.request(option,(res)=>{
 		//console.dir(res.headers);
+		if(res.headers['set-cookie']){
+			yield cache.set(sname,res.headers['set-cookie']);
+		}
+
 		res.on('data',(chunk)=>{
-			bufferHelper.concat(chunk);
+				bufferHelper.concat(chunk);
 		});
 		res.on('end',()=>{
-			var html = bufferHelper.toBuffer();
-			callback && callback(html);
+				var html = bufferHelper.toBuffer();
+				callback && callback(html);
 		});
 	});
 	req.on('error',(e)=>{
 		console.log(e);
-        errback && errback(e.message);
+	    errback && errback(e.message);
     });
     req.end()
 };
@@ -67,7 +78,9 @@ exports.getUrl = (url, headers,callback, errback)=>{
  */
 exports.postUrl = (url, data,headers,callback, errback)=>{
     var bufferHelper = new BufferHelper(),
-		option ={};
+	option =Url.parse(url);
+	var sname = Url.parse(url).host+'-cookie';
+	var scookie = yield cache.get(sname);
 
     //如果有代理
     if(proxyHost && proxyHost.host && proxyHost.port){
@@ -75,8 +88,6 @@ exports.postUrl = (url, data,headers,callback, errback)=>{
         option.port = proxyHost.port;
         option.path = url;
         option.protocol = url.indexOf('https')>-1?'https:':'http:';
-    }else{
-        option = Url.parse(url)
     }
 
 	option.method = 'POST';
@@ -84,21 +95,25 @@ exports.postUrl = (url, data,headers,callback, errback)=>{
 	var sendData = _.isObject(data)?queryStr.stringify(data):data;
 	option.headers = {
 		"Content-Type": 'application/x-www-form-urlencoded',
-        "Content-Length": sendData.length,
+    	"Content-Length": sendData.length,
 		'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36'
 	};
+
+	if(scookie){
+		options.headers['Cookie']=scookie;
+	}
 
 	var req = httpType.request(option,(res)=>{
 		res.setEncoding('utf8');
 		res.on('data',(data)=>{
-			result += data;
+				result += data;
 		});
 		res.on('end',()=>{
-			callback && callback(result);
+				callback && callback(result);
 		});
 	});
 	req.on('error',(e)=>{
-        errback && errback(e.message);
+    	errback && errback(e.message);
     });
     req.write(sendData+'\n');
     req.end()
