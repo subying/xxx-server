@@ -81,6 +81,10 @@ const controllerMain = {
         router.get('/mh/detail/:name/:page',function*(){
             yield _self.runController.bind(this)('mhDetail');
         });
+
+        router.get('/mh/resource/:name',function*(){
+            yield _self.runController.bind(this)('mhResource');
+        });
         //漫画 end
 
         //视频 start

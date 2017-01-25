@@ -86,6 +86,9 @@ function *detailSpider(name,page){
     let imgSrc = $('#page img').attr('src');
     imgSrc = imgSrc.replace(/\d{1,2}\.jpg/,'');
 
+    imgSrc = imgSrc.replace(siteUrl,'').replace(/\//g,'+');
+    imgSrc = '/mh/resource/'+imgSrc;
+
     const _arr = [];
     for(let i=0; i<len; i++){
         if(page>0 && i+1<10){
