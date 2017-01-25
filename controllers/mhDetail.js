@@ -22,7 +22,8 @@ module.exports = function *(){
         pageInfo:{
             prev: page>1?'/mh/detail/'+name+'/'+(page-1)+'/'+total:'',
             next: page<total?'/mh/detail/'+name+'/'+(page+1)+'/'+total:''
-        }
+        },
+        dir: '/mh/series/'+name
     },'mhDetail');
     //this.body=list;
 };

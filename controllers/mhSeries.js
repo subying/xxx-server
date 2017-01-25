@@ -16,7 +16,7 @@ module.exports = function *(){
 
     this.render({
         list: list,
-        title: 'mh series'
+        title: name
     },'mhSeries');
     //this.body=list;
 };
