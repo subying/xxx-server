@@ -1,5 +1,5 @@
 /*
- * @description 漫画系列章节
+ * @description 漫画某系列章节
  */
 const mh = require('../spider/mh');
 
