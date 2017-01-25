@@ -88,7 +88,11 @@ function *detailSpider(name,page){
 
     const _arr = [];
     for(let i=0; i<len; i++){
-        _arr[i] = imgSrc+(i+1)+'.jpg';
+        if(page>0 && i+1<10){
+            _arr[i] = imgSrc+'0'+(i+1)+'.jpg';
+        }else{
+            _arr[i] = imgSrc+(i+1)+'.jpg';
+        }
     }
 
     return JSON.stringify({
