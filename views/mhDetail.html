@@ -9,7 +9,7 @@
 	<div class="list">
 		<ul>
 			<%list.map(function(item,index){%>
-				<li><img src="<%-item%>" /></li>
+				<li><a href="<%=item%>"><img src="<%=item%>"></a></li>
 			<%})%>
 		</ul>
 	</div>
