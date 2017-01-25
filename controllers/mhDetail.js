@@ -18,7 +18,7 @@ module.exports = function *(){
 
     this.render({
         list: list,
-        title: name,
+        title: page+'-'+name,
         pageInfo:{
             prev: page>1?'/mh/detail/'+name+'/'+(page-1)+'/'+total:'',
             next: page<total?'/mh/detail/'+name+'/'+(page+1)+'/'+total:''
