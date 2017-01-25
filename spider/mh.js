@@ -56,7 +56,7 @@ function *seriesSpider(name){
     list.map((index,obj) => {
         const $elem = $(obj).find('.title a');
         let _href = $elem.attr('href');
-        _href = '/'+_href.replace(siteUrl+'read','mh/detail').replace('ko/0/','');
+        _href = '/'+_href.replace(siteUrl+'read','mh/detail').replace('ko/0/','')+list.length;
         _arr.push({
             href: _href,
             text: $elem.text()
@@ -71,7 +71,7 @@ function *seriesSpider(name){
 }
 
 /**
- * @description 抓取列表
+ * @description 抓取详细页面
  * @param {string} name 名称
  * @param {number} page 章节数
  * @returns {Voild}

@@ -12,6 +12,12 @@
 				<li><a href="<%=item%>"><img src="<%=item%>"></a></li>
 			<%})%>
 		</ul>
+        <%if(pageInfo.prev){%>
+            <p><a href="<%=pageInfo.prev%>">prev</a></p>
+        <%}%>
+        <%if(pageInfo.next){%>
+            <p><a href="<%=pageInfo.next%>">next</a></p>
+        <%}%>
 	</div>
 </body>
 </html>
