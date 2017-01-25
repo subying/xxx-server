@@ -75,7 +75,7 @@ const controllerMain = {
         });
 
         router.get('/mh/series/:name',function*(){
-            yield _self.runController.bind(this)('mhSerie');
+            yield _self.runController.bind(this)('mhSeries');
         });
 
         router.get('/mh/detail/:name/:page',function*(){
