@@ -2,10 +2,10 @@
  * @description youav.com
  */
 const cheerio = require('cheerio');
-const _ = require('lodash');
+//const _ = require('lodash');
 
 const tool = require('../libs/tool');
-var cache = require('../libs/cache');
+const cache = require('../libs/cache');
 const siteUrl = 'http://www.youav.com';
 
 /*
@@ -13,46 +13,52 @@ const siteUrl = 'http://www.youav.com';
  * @param {Number} page
 */
 function *listSpider(page){
-    var _url = siteUrl+'/videos?o=mr&page='+page,_arr=[];
-    var content = yield tool.getHttpContent(_url,{});
-    var $ = cheerio.load(content);
-    var list = $('.well-sm a');
+    const _url = siteUrl+'/videos?o=mr&page='+page;
+    const _arr=[];
+    const content = yield tool.getHttpContent(_url,{});
+    const $ = cheerio.load(content);
+    const list = $('.well-sm a');
 
 
-    list.map((index,obj)=>{
-	    var $elem = $(obj);
-		var _href = $elem.attr('href');
+    list.map((index,obj) => {
+        const $elem = $(obj);
+        let _href = $elem.attr('href');
         _href = _href.replace(/video\/(\d+)\/(.*)/,'$1_$2').replace('/','');
-        var _infoArr = _href.split('_');
+        const _infoArr = _href.split('_');
 
-		_href = '/video/show/'+ _infoArr[0];
-		_arr.push({
-			href: _href,
-			text: _infoArr[1]
-		});
-	});
+        _href = '/video/show/'+ _infoArr[0];
+        _arr.push({
+            href: _href,
+            text: _infoArr[1]
+        });
+        return $elem;
+    });
 
-	return JSON.stringify({
-		code:0,
-		data: _arr
-	});
+    return JSON.stringify({
+        code:0,
+        data: _arr
+    });
 }
 
 /*
  * @description 详情
 */
 function *showSpider(params){
-    var _url = siteUrl+'/load.php?pid='+params.id+'',title='',videoUrl='',_id='videoPid'+params.id;
-    // var showData = yield cache.get(_id);
+    const _url = siteUrl+'/load.php?pid='+params.id+'';
+    let title='';
+    //let videoUrl='';
+    const _id='videoPid'+params.id;
+    // const showData = yield cache.get(_id);
     // if(!showData){
-        var content = yield tool.getHttpContent(_url,{});
-        var str = content.toString().replace(/[\s\r]*/g,'');
-        var regx = /https\:\/\/(\d|[a-zA-Z]|=|%|-|&|\.|\/|\?|_)+/g;
-        var arr = str.match(regx);
+    const content = yield tool.getHttpContent(_url,{});
+    const str = content.toString().replace(/[\s\r]*/g,'');
+    const regx = /https:\/\/(\d|[a-zA-Z]|=|%|-|&|\.|\/|\?|_)+/g;
+    const arr = str.match(regx);
 
-        yield cache.set(_id,JSON.stringify({sd: arr[0],hd: arr[1]}));
+    yield cache.set(_id,JSON.stringify({sd: arr[0],hd: arr[1]}));
 
-        videoUrl = arr[1];
+    //videoUrl = arr[1];
+
     // }else{
     //    showData = JSON.parse(showData);
     //    videoUrl = showData.hd;
@@ -60,15 +66,14 @@ function *showSpider(params){
 
     title = '';
 
-	return JSON.stringify({
-		code:0,
-		videoUrl: '/video/play/'+params.id,
+    return JSON.stringify({
+        code:0,
+        videoUrl: '/video/play/'+params.id,
         title: title
-	});
-
+    });
 }
 
 module.exports = {
-	list: listSpider,
-	show: showSpider
+    list: listSpider,
+    show: showSpider
 };

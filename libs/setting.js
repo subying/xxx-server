@@ -2,8 +2,11 @@
  * @description 设置模块
  * @auth subying
  */
-
-const config = require('../config');
+const yaml = require('js-yaml');
+const fs = require('fs');
+const path = require('path');
+const _file = path.join(__dirname,'../config.yml');
+const config = yaml.safeLoad(fs.readFileSync(_file));
 
 const setting = config;
 

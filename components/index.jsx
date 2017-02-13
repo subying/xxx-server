@@ -1,7 +1,7 @@
 /*
  * @fileOverview  小说首页
 */
-var React = require("react");
+const React = require('react');
 
 class BookIndex extends React.Component{
     constructor(){
@@ -15,7 +15,7 @@ class BookIndex extends React.Component{
     hide(){
         this.setState({
             show: !this.state.show
-        })
+        });
     }
 
     componentWillMount(){
@@ -24,17 +24,16 @@ class BookIndex extends React.Component{
     render(){
         return(
             <div>
-                <ul style={{"display":this.state.show?"block":"none"}}>
+                <ul style={{display:this.state.show?'block':'none'}}>
                     {
-                        this.props.list.map((item,index)=>{
-                            return(<li key={index}><a href={item.href}>{item.text}</a></li>)
+                        this.props.list.map((item,index) => {
+                            return(<li key={index}><a href={item.href}>{item.text}</a></li>);
                         })
                     }
-                    
                 </ul>
                 {/* <a href="#" onClick={this.hide.bind(this)}>显示隐藏</a> */}
             </div>
-        )
+        );
     }
 }
 

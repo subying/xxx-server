@@ -1,0 +1,13 @@
+path:
+    controller: 'controllers' #控制器文件夹名称
+    view: 'views' #视图文件夹名称
+    src: './statics/src' #静态源文件目录
+    debug: './statics/dist' #调试文件目录
+    dist: './statics/dist' #生产环境目录
+port: 3000 #服务器端口
+appJsPath: 'app' #静态源文件业务文件夹
+htmlViews: './views' #服务端视图文件
+mapPath: './views/map' #map文件夹
+proxyHost:
+    host: ''
+    port: ''

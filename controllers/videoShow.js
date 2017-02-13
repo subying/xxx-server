@@ -1,20 +1,22 @@
 /*
  * @description 详情
  */
-var video = require('../spider/video');
+const video = require('../spider/video');
 
 module.exports = function *(){
-	var result={},videoUrl=[],title='';
-	result = yield video.show(this.params);
-	result = JSON.parse(result);
+    let result={};
+    let videoUrl=[];
+    let title='';
+    result = yield video.show(this.params);
+    result = JSON.parse(result);
 
-	if(Number(result.code)) throw Error('err');
+    if(Number(result.code)) throw Error('err');
 
-	videoUrl = result.videoUrl;
+    videoUrl = result.videoUrl;
     title = result.title;
 
-	this.render({
-		videoUrl: videoUrl,
-		title: title
-	},'videoShow');
+    this.render({
+        videoUrl: videoUrl,
+        title: title
+    },'videoShow');
 };

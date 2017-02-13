@@ -11,6 +11,7 @@
     "cheerio": "^0.20.0",
     "ejs": "^2.4.1",
     "iconv-lite": "^0.4.13",
+    "js-yaml": "^3.8.1",
     "koa": "^1.1.2",
     "koa-compress": "^1.0.9",
     "koa-favicon": "^1.2.1",

@@ -9,16 +9,15 @@ const path = require('path');
 const _ = require('lodash');
 const ejs = require('ejs');
 
-var setting = require('./setting');
-var viewsPath = '../'+setting.path.view;
+const setting = require('./setting');
+const viewsPath = '../'+setting.path.view;
 
 module.exports = function(data, tpl, status){
-	var file = path.join(__dirname, viewsPath, tpl+'.html');
-	var _html;
-	_.extend(this._data, data);
-	this.status = status || 200;
+    const file = path.join(__dirname, viewsPath, tpl+'.html');
+    _.extend(this._data, data);
+    this.status = status || 200;
 
-	_html = ejs.render(fs.readFileSync(file).toString(), this._data);
-	
-	this.body = _html;
+    const _html = ejs.render(fs.readFileSync(file).toString(), this._data);
+
+    this.body = _html;
 };

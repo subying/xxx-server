@@ -1,29 +1,29 @@
 /*
  * @description 播放
  */
-var request = require('request');
-var cache = require('../libs/cache');
+const request = require('request');
+const cache = require('../libs/cache');
 const setting = require('../libs/setting');
-var proxyHost = setting.proxyHost;
-var Agent = require('socks5-http-client/lib/Agent');
-var Agents = require('socks5-https-client/lib/Agent');
-var Url = require('url');
+const proxyHost = setting.proxyHost;
+const Agent = require('socks5-http-client/lib/Agent');
+const Agents = require('socks5-https-client/lib/Agent');
+//const Url = require('url');
 
 module.exports = function *(){
-    var _id = 'videoPid'+this.params.id;
-    var _quality = this.params.quality=='hd'?'hd':'sd';
+    const _id = 'videoPid'+this.params.id;
+    const _quality = this.params.quality==='hd'?'hd':'sd';
 
-    var playData = yield cache.get(_id);
+    let playData = yield cache.get(_id);
 
     if(playData){
         playData = JSON.parse(playData);
-        var playUrl = playData[_quality];
+        const playUrl = playData[_quality];
         if(playUrl){
-            var options = {
+            const options = {
                 url: playUrl,
                 headers: {
                     'User-Agent': 'subying-req',
-                    'Range': this.headers['range']
+                    Range: this.headers['range']
                 }
             };
 
@@ -33,14 +33,13 @@ module.exports = function *(){
                 options.agentOptions = {
                     socksHost: proxyHost.host, // Defaults to 'localhost'.
                     socksPort: proxyHost.port // Defaults to 1080.
-                }
+                };
             }
 
             this.type = 'video/mp4';
-            var x = request(options);
+            const x = request(options);
             this.body = x;
         }
-
     }
 
     //request('http://statics.subying.com/resource/vi.mp4').pipe(this.res);

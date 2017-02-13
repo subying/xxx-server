@@ -2,40 +2,41 @@
     *@description 开发模式配置
 */
 
-'use strict';
-
 const path = require('path');
-const fs   = require('fs');
+//const fs   = require('fs');
 
-const config = require('./config.json');
+const config = require('./libs/setting');
 //const domainPrefix = config.env=='www'?'': config.env+'.';
 //const staticUrl = `//${domainPrefix}${config.domain.static}/debug/`;
 const staticUrl = '/debug/';
 const srcPath = config.path.src;
 
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = (file)=>{
-    var _name,extractLESS,srcDir,opt={};
+module.exports = (_file) => {
+    let _name;
+    let extractLESS;
+    let srcDir;
+    const opt={};
 
 
-    if(file){
-        file = file.replace(/\\/g,'/');
+    if(_file){
+        const file = _file.replace(/\\/g,'/');
 
-        var _name = file.replace(/\.js(x?)$/,'');
+        _name = file.replace(/\.js(x?)$/,'');
         _name = _name.replace(/\//g,'_');
-        var extractLESS = new ExtractTextPlugin('css/'+ _name +'.css');
-        var srcDir = `./${srcPath}/js/${config.appJsPath}/`;
+        extractLESS = new ExtractTextPlugin('css/'+ _name +'.css');
+        srcDir = `./${srcPath}/js/${config.appJsPath}/`;
         opt.entry = srcDir+file;
         opt.output = {
             filename: 'js/'+_name+'.js',
-            chunkFilename: "js/[name].js"
+            chunkFilename: 'js/[name].js'
         };
     }else{
         extractLESS = new ExtractTextPlugin('css/[name].css');
         opt.output = {
-            filename: "js/[name].js",
-            chunkFilename: "js/[name].js"
+            filename: 'js/[name].js',
+            chunkFilename: 'js/[name].js'
         };
     }
     opt.output.publicPath = staticUrl;
@@ -55,36 +56,36 @@ module.exports = (file)=>{
             },
             {
                 test: /\.(jpg|png|gif)$/,
-                loader: "url?limit=8192&name=img/[folder]/[name].[ext]" + '!image-webpack?{progress:true, optimizationLevel: 1, interlaced: false, mozjpeg: {quality: 80}}'
+                loader: 'url?limit=8192&name=img/[folder]/[name].[ext]!image-webpack?{progress:true, optimizationLevel: 1, interlaced: false, mozjpeg: {quality: 80}}'
             },
             {
                 test: /\.(eot|svg|ttf|woff)$/,
-                loader: "file?name=fonts/[name].[ext]"
+                loader: 'file?name=fonts/[name].[ext]'
             },
             {
                 test: /\.jsx?$/,
-                loader: "babel",
+                loader: 'babel',
                 query: {
-                  presets: ['react','es2015']
+                    presets: ['react','es2015']
                 }
             }
         ],
         postLoaders: [
-             {
-               test: /\.jsx?$/,
-               loaders: ['es3ify-loader']
-             }
+            {
+                test: /\.jsx?$/,
+                loaders: ['es3ify-loader']
+            }
         ]
     };
 
     opt.plugins = [extractLESS];
     //当我们想在项目中require一些其他的类库或者API，而又不想让这些类库的源码被构建到运行时文件中，这在实际开发中很有必要。此时我们就可以通过配置externals参数来解决这个问题：
     opt.externals={
-        'react':'React',
+        react:'React',
         'react-dom':'ReactDOM'
     };
     opt.resolve ={
-        extensions:["",".js","jsx"], //配置默认后缀,比如 require('./a')  会解析成 require('./a.js'), 第一个参数一定是空字符串，表示用默认的后缀，只有没有后缀才会自动添加
+        extensions:['','.js','jsx'], //配置默认后缀,比如 require('./a')  会解析成 require('./a.js'), 第一个参数一定是空字符串，表示用默认的后缀，只有没有后缀才会自动添加
         root:[
             /*
                 配置查找模块路径
