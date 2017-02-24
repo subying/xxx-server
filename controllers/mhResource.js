@@ -10,7 +10,7 @@ const Agents = require('socks5-https-client/lib/Agent');
 
 module.exports = function *(){
     const name = this.params.name;
-    const _url = 'https://raws.yomanga.co/'+name.replace(/\+/g,'/');
+    const _url = 'https://yomanga.co/reader/'+name.replace(/\+/g,'/');
 
     const options = {
         method:'GET',

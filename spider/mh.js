@@ -6,7 +6,7 @@ const cheerio = require('cheerio');
 //const _ = require('lodash');
 
 const tool = require('../libs/tool');
-const siteUrl = 'https://raws.yomanga.co/';
+const siteUrl = 'https://yomanga.co/reader/';
 
 /**
  * @description 抓取列表
@@ -56,7 +56,7 @@ function *seriesSpider(name){
     list.map((index,obj) => {
         const $elem = $(obj).find('.title a');
         let _href = $elem.attr('href');
-        _href = '/'+_href.replace(siteUrl+'read','mh/detail').replace('ko/0/','')+list.length;
+        _href = '/'+_href.replace(siteUrl+'read','mh/detail').replace('en/0/','')+list.length;
         _arr.push({
             href: _href,
             text: $elem.text()
@@ -77,7 +77,7 @@ function *seriesSpider(name){
  * @returns {Voild}
 */
 function *detailSpider(name,page){
-    const _url = siteUrl+'read/'+ name +'/ko/0/'+page+'/page/1';//获取第一页
+    const _url = siteUrl+'read/'+ name +'/en/0/'+page+'/page/1';//获取第一页
 
     const content = yield tool.getHttpContent(_url,{});
 
