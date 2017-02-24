@@ -4,7 +4,7 @@
 const cheerio = require('cheerio');
 //const Iconv = require('iconv-lite');//处理中文编码
 //const _ = require('lodash');
-
+const cache = require('../libs/cache');
 const tool = require('../libs/tool');
 const siteUrl = 'https://yomanga.co/reader/';
 
@@ -78,25 +78,47 @@ function *seriesSpider(name){
 */
 function *detailSpider(name,page){
     const _url = siteUrl+'read/'+ name +'/en/0/'+page+'/page/1';//获取第一页
+    const listId = `mh-${name}-${page}`;
+    const listData = yield cache.get(listId);
+    let _arr = [];
 
-    const content = yield tool.getHttpContent(_url,{});
+    if(!listData){
+        const content = yield tool.getHttpContent(_url,{});
+        const $ = cheerio.load(content);
+        const len = $('#psel option').length;
 
-    const $ = cheerio.load(content);
-    const len = $('#psel option').length;
-    let imgSrc = $('#page img').attr('src');
-    imgSrc = imgSrc.replace(/\d{1,2}\.jpg/,'');
+        let imgSrc = $('#page img').attr('src');
+        imgSrc = imgSrc.replace(siteUrl,'').replace(/\//g,'+');
+        imgSrc = '/mh/resource/'+imgSrc;
+        _arr.push(imgSrc);
 
-    imgSrc = imgSrc.replace(siteUrl,'').replace(/\//g,'+');
-    imgSrc = '/mh/resource/'+imgSrc;
+        for(let i=1; i<len; i++){
+            const _furl = siteUrl+'read/'+ name +'/en/0/'+page+'/page/'+(i+1);
+            const _fcon = yield tool.getHttpContent(_furl,{});
+            const _$doc = cheerio.load(_fcon);
 
-    const _arr = [];
-    for(let i=0; i<len; i++){
-        if(page>0 && i+1<10){
-            _arr[i] = imgSrc+'0'+(i+1)+'.jpg';
-        }else{
-            _arr[i] = imgSrc+(i+1)+'.jpg';
+            imgSrc = _$doc('#page img').attr('src');
+            imgSrc = imgSrc.replace(siteUrl,'').replace(/\//g,'+');
+            imgSrc = '/mh/resource/'+imgSrc;
+            _arr.push(imgSrc);
         }
+        // imgSrc = imgSrc.replace(/\d{1,3}\.jpg/,'');
+        // imgSrc = imgSrc.replace(siteUrl,'').replace(/\//g,'+');
+        // imgSrc = '/mh/resource/'+imgSrc;
+        //
+        //
+        // for(let i=0; i<len; i++){
+        //     if(page>0 && i+1<10){
+        //         _arr[i] = imgSrc+'0'+(i+1)+'.jpg';
+        //     }else{
+        //         _arr[i] = imgSrc+(i+1)+'.jpg';
+        //     }
+        // }
+        yield cache.set(listId,JSON.stringify(_arr));
+    }else{
+        _arr = JSON.parse(listData);
     }
+
 
     return JSON.stringify({
         code:0,
