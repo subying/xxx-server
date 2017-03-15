@@ -19,11 +19,16 @@ function *listSpider(page){
         _url = _url+'list_6_'+ page +'.html';
     }
 
-    const content = yield tool.getHttpContent(_url,{});
+    let content = yield tool.getHttpContent(_url,{});
+    let $ = cheerio.load(Iconv.decode(content,'gb2312'));
 
-    const $ = cheerio.load(Iconv.decode(content,'gb2312'));
+    const scriptText = $('script').eq(0).text();
+    if(scriptText.indexOf('xinggan/?')>-1){
+        const matchArr = scriptText.match(/xinggan(.*)/);
+        content = yield tool.getHttpContent(siteUrl+matchArr[1].replace(/;|"/g,''),{});
+        $ = cheerio.load(Iconv.decode(content,'gb2312'));
+    }
     const list = $('.list-left dd').not('.page');
-
 
     list.map((index,obj) => {
         const $elem = $(obj).find('a').eq(0);
