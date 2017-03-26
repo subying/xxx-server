@@ -6,7 +6,7 @@ const cheerio = require('cheerio');
 
 const tool = require('../libs/tool');
 const cache = require('../libs/cache');
-const siteUrl = 'http://www.youav.com';
+const siteUrl = 'https://www.youav.com';
 
 /*
  * @description 抓取列表
