@@ -52,10 +52,13 @@ function *showSpider(params){
     // if(!showData){
     const content = yield tool.getHttpContent(_url,{});
     const str = content.toString().replace(/[\s\r]*/g,'');
-    const regx = /https:\/\/(\d|[a-zA-Z]|=|%|-|&|\.|\/|\?|_)+/g;
-    const arr = str.match(regx);
+    const regx = /https:\/\/(\d|[a-zA-Z]|=|%|-|&|\.|\/|\?|_|:)+/g;
+    const _arr = str.match(regx);
+    const arr = _arr.filter((item) => {
+        return !/\.js$/.test(item);
+    });
 
-    yield cache.set(_id,JSON.stringify({sd: arr[0],hd: arr[1]}));
+    yield cache.set(_id,JSON.stringify({sd: arr[0],480:arr[1],720:arr[2],hd: arr[3]}));
 
     //videoUrl = arr[1];
 
