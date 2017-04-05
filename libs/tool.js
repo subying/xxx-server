@@ -25,6 +25,7 @@ exports.getUrl = function(url,headers,callback,errback){
     const option = {
         method:'GET',
         url:url,
+        gzip: true,//网页使用gzip进行了压缩 所以要增加这个
         headers:{
             'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36'
         },
