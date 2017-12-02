@@ -63,6 +63,9 @@ const controllerMain = {
         router.get('/img/show/:id',function*(){
             yield _self.runController.bind(this)('imgShow');
         });
+        router.get('/img/show',function*(){
+            yield _self.runController.bind(this)('imgShow');
+        });
         //图片 end
 
         //漫画 start

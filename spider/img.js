@@ -65,8 +65,9 @@ function *showSpider(params){
     page = parseInt(page,10);
 
     for(let i=1; i<=page; i++){
+        const _src = imgUrl+'/'+i+'.jpg';
         _arr.push({
-            src:imgUrl+'/'+i+'.jpg',
+            src: '/img/show/?src='+_src+'&surl='+_url,
             name:title
         });
     }
