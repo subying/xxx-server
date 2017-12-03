@@ -44,7 +44,8 @@ function *listSpider(page){
  * @description 详情
 */
 function *showSpider(params){
-    const _url = siteUrl+'/load.php?pid='+params.id+'';
+    //const _url = siteUrl+'/load.php?pid='+params.id+'';
+    const _url = siteUrl+'/ajax/hls.php?server=8&pid='+params.id;
     let title='';
     //let videoUrl='';
     const _id='videoPid'+params.id;
@@ -55,10 +56,12 @@ function *showSpider(params){
     const regx = /https:\/\/(\d|[a-zA-Z]|=|%|-|&|\.|\/|\?|_|:)+/g;
     const _arr = str.match(regx);
     const arr = _arr.filter((item) => {
-        return !/\.js$/.test(item);
+        return item.indexOf('.mp4')>-1;
+        //return !/\.js$/.test(item);
     });
 
-    yield cache.set(_id,JSON.stringify({sd: arr[0],480:arr[1],720:arr[2],hd: arr[3]}));
+    yield cache.set(_id,JSON.stringify({sd: arr[0],480:arr[0],720:arr[0],hd: arr[0]}));
+    //yield cache.set(_id,JSON.stringify({sd: arr[0],480:arr[1],720:arr[2],hd: arr[3]}));
 
     //videoUrl = arr[1];
 
