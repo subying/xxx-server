@@ -6,7 +6,7 @@ const Iconv = require('iconv-lite');//处理中文编码
 //const _ = require('lodash');
 
 const tool = require('../libs/tool');
-const siteUrl = 'http://www.mm131.com/xinggan/';
+const siteUrl = 'https://m.mm131.net/xinggan/';
 
 /*
  * @description 抓取列表
@@ -19,19 +19,13 @@ function *listSpider(page){
         _url = _url+'list_6_'+ page +'.html';
     }
 
-    let content = yield tool.getHttpContent(_url,{});
-    let $ = cheerio.load(Iconv.decode(content,'gb2312'));
+    const content = yield tool.getHttpContent(_url,{});
+    const $ = cheerio.load(Iconv.decode(content,'gb2312'));
 
-    const scriptText = $('script').eq(0).text();
-    if(scriptText.indexOf('xinggan/?')>-1){
-        const matchArr = scriptText.match(/xinggan(.*)/);
-        content = yield tool.getHttpContent(siteUrl+matchArr[1].replace(/;|"/g,''),{});
-        $ = cheerio.load(Iconv.decode(content,'gb2312'));
-    }
-    const list = $('.list-left dd').not('.page');
+    const list = $('#content .post-content a');
 
     list.map((index,obj) => {
-        const $elem = $(obj).find('a').eq(0);
+        const $elem = $(obj);
         const imgSrc = $elem.children().attr('src');
 
         let _href = $elem.attr('href');
@@ -39,7 +33,7 @@ function *listSpider(page){
         _arr.push({
             href: _href,
             img: imgSrc,
-            text: $elem.text()
+            text: $elem.children().attr('alt')
         });
         return $elem;
     });
@@ -59,8 +53,8 @@ function *showSpider(params){
     let title='';
     const content = yield tool.getHttpContent(_url,{});
     const $ = cheerio.load(Iconv.decode(content,'gb2312'));
-    let page = $('.page-ch').eq(0).text().replace(/[^\d]*(\d+)[^\d]*/,'$1');
-    const imgUrl = $('.content-pic img').eq(0).attr('src').replace(/(.*)\/\d\.jpg/,'$1');
+    let page = $('.paging .rw').eq(0).text().replace(/[\d]*\/([\d]+)[^\d]*/,'$1');
+    const imgUrl = $('#content .post-content img').eq(0).attr('src').replace(/(.*)\/\d\.jpg/,'$1');
     title = $('h5').text();
     page = parseInt(page,10);
 
